@@ -62,11 +62,12 @@ void observer_walker(observer_list *list,
  */
 
 observer* find_obs(char *obs, observer_list *list) {
+    observer_list *current = list;
     do {
-        if (strcmp(obs, list->content->id)) {
-            return list->content;
+        if (strcmp(obs, current->content->id) == 0) {
+            return current->content;
         }
-    } while (list->next != NULL);
+    } while ((current = current->next) != NULL);
     return NULL;
 }
 
@@ -84,23 +85,35 @@ observer_list* read_observers (FILE *observers) {
     char *id = malloc(5);
     fscanf(observers, " %d %d %d %d %d %d", &day, &month, &year,
             &hour, &minute, &second);
-    printf("Observations taken at %c%d/%2d/%4d at %2d:%2d:%2d.\n",
-            day < 10 ? '0' : '',
-            day, month, year, hour, minute, second);
+    printf("Observations recorded at %c%d/%c%d/%4d at %c%d:%c%d:%c%d.\n",
+            day < 10 ? '0' : '\0', day, 
+            month < 10 ? '0' : '\0', month, year,
+            hour < 10 ? '0' : '\0', hour,
+            minute < 10 ? '0' : '\0', minute,
+            second < 10 ? '0' : '\0', second);
     while(fscanf(observers, " %s %lf %lf", id, &lat, &lng)
             != EOF) {
         current->content = malloc(sizeof(observer));
-        current->content->id = id;
+        current->content->id = malloc(5);
+        strcpy(current->content->id, id);
         current->content->loc.lat = lat;
         current->content->loc.lng = lng;
         last = current;
-        printf("Observer %s: (%f, %f)\n", current->content->id,
-                current->content->loc.lat, current->content->loc.lng);
         current = current->next = malloc(sizeof(observer_list));
     }
     last->next = NULL;
     free(current);
     return result;
+}
+
+/*
+ * Takes in a location and returns whether it is within the predefined
+ * boundaries.
+ */
+
+int in_bounds(location loc) {
+    return (loc.lat <= MAX_LAT && loc.lat >= MIN_LAT &&
+            loc.lng <= MAX_LNG && loc.lng >= MIN_LNG);
 }
 
 /*
@@ -112,14 +125,22 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
     sighting_list *result = malloc(sizeof(sighting_list));
     sighting_list *last = NULL;
     sighting_list *current = result;
-    char *obs;
+    char *obs = malloc(5);
+    char species;
+    double bearing, distance;
     while(fscanf(sightings, " %s %c %lf %lf",
-            obs,
-            &current->content->species,
-            &current->content->bearing,
-            &current->content->distance) != EOF) {
+            obs, &species, &bearing, &distance) != EOF) {
+        location loc;
+        current->content = malloc(sizeof(sighting));
         if ((current->content->obs = find_obs(obs, list)) == NULL) {
             fprintf(stderr, "Observer %s not found.\n", obs);
+            continue;
+        }
+        current->content->species = species;
+        current->content->bearing = bearing;
+        current->content->distance = distance;
+        loc = get_location(current->content);
+        if (!in_bounds(loc)) {
             continue;
         }
         last = current;
@@ -136,11 +157,11 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
 
 void print_sightings(sighting_list *sightings) {
     sighting_list *curr_sightings = sightings;
-    printf("Observer\tSpecies\tLocation\n");
+    printf("Observer\tSpecies\t\tLocation\n");
     do {
         sighting *current = curr_sightings->content;
         location curr_location = get_location(current);
-        printf("%s\t%s\t(%f,%f)\n",
+        printf("%8s\t%8s\t(%f,%f)\n",
                 current->obs->id,
                 current->species == 'P' ? "Porpoise" : "Dolphin",
                 curr_location.lat, curr_location.lng);

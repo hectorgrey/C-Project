@@ -82,6 +82,13 @@ void obs_walker(observer_list *list,
 observer_list* read_observers(FILE *observers);
 
 /*
+ * Takes in a location and returns whether it is within the predefined
+ * boundaries.
+ */
+
+int in_bounds(location loc);
+
+/*
  * Takes in a file containing a list of sightings and returns a linked list
  * of sightings.
  */

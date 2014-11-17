@@ -39,9 +39,7 @@ int main(int argc, char** argv) {
     }
     
     observers = read_observers(o_file);
-    printf("Successfully read Observers\n");
     sightings = read_sightings(s_file, observers);
-    printf("Successfully read Sightings\n");
     print_sightings(sightings);
     
     fclose(o_file);
