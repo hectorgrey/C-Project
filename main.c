@@ -38,10 +38,10 @@ int main(int argc, char** argv) {
         return (EXIT_FAILURE);
     }
     
-    printf("Successfully loaded Observer and Sighting files.\n");
-    
     observers = read_observers(o_file);
+    printf("Successfully read Observers\n");
     sightings = read_sightings(s_file, observers);
+    printf("Successfully read Sightings\n");
     print_sightings(sightings);
     
     fclose(o_file);
