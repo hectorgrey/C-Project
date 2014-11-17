@@ -76,17 +76,26 @@ observer* find_obs(char *obs, observer_list *list) {
  */
 
 observer_list* read_observers (FILE *observers) {
-    observer_list *result = malloc(sizeof(sighting_list));
+    observer_list *result = malloc(sizeof(observer_list));
     observer_list *last = NULL;
     observer_list *current = result;
     double lat, lng;
     int day, month, year, hour, minute, second;
+    char *id = malloc(5);
     fscanf(observers, " %d %d %d %d %d %d", &day, &month, &year,
             &hour, &minute, &second);
-    while(fscanf(observers," %s %lf %lf",current->content->id, &lat, &lng)) {
+    printf("Observations taken at %c%d/%2d/%4d at %2d:%2d:%2d.\n",
+            day < 10 ? '0' : '',
+            day, month, year, hour, minute, second);
+    while(fscanf(observers, " %s %lf %lf", id, &lat, &lng)
+            != EOF) {
+        current->content = malloc(sizeof(observer));
+        current->content->id = id;
         current->content->loc.lat = lat;
         current->content->loc.lng = lng;
         last = current;
+        printf("Observer %s: (%f, %f)\n", current->content->id,
+                current->content->loc.lat, current->content->loc.lng);
         current = current->next = malloc(sizeof(observer_list));
     }
     last->next = NULL;
