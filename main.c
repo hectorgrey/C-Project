@@ -22,6 +22,8 @@ int main(int argc, char** argv) {
     sighting_list *sightings;
     observer_list *observers;
     
+    // Function 1
+    
     printf("Please enter the file name you wish to load the observers from: ");
     scanf("%s", o_path);
     printf("Please enter the file name you wish to load the sightings from: ");
@@ -40,9 +42,16 @@ int main(int argc, char** argv) {
     
     observers = read_observers(o_file);
     sightings = read_sightings(s_file, observers);
-    print_sightings(sightings);
-    
     fclose(o_file);
     fclose(s_file);
+    
+    print_sightings(sightings);
+    
+    // Function 2
+    
+    
+    
+    // Function 3
+    
     return (EXIT_SUCCESS);
 }
