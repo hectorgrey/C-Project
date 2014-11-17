@@ -5,6 +5,9 @@
  * Created on 10 November 2014, 15:05
  */
 
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include "sighting.h"
 
 /*
@@ -42,8 +45,92 @@ void sighting_walker(sighting_list *list,
     sighting_walker(list->next, function);
 }
 
-void sighting_walker(sighting_list *in_list, sighting_list *out_list,
-        void (*function)(sighting_list *in_list, sighting_list *out_list)) {
-    function(in_list, out_list);
-    sighting_walker(in_list->next, out_list->next, function);
+/*
+ * Takes in an observer linked list and a function pointer, and runs the
+ * function on every member of the list.
+ */
+
+void observer_walker(observer_list *list,
+        void (*function)(observer_list *list)) {
+    function(list);
+    observer_walker(list->next, function);
+}
+
+/*
+ * Takes the ID code of an observer and a list of observers, and returns the
+ * observer with that ID code.
+ */
+
+observer* find_obs(char *obs, observer_list *list) {
+    do {
+        if (strcmp(obs, list->content->id)) {
+            return list->content;
+        }
+    } while (list->next != NULL);
+    return NULL;
+}
+
+/*
+ * Takes in a file containing a list of observers and returns a linked list
+ * of observers.
+ */
+
+observer_list* read_observers (FILE *observers) {
+    observer_list *result = malloc(sizeof(sighting_list));
+    observer_list *last = NULL;
+    observer_list *current = result;
+    int lat, lng;
+    while(fscanf(observers,"",current->content->id, &lat, &lng)) {
+        current->content->loc.lat = lat;
+        current->content->loc.lng = lng;
+        last = current;
+        current = current->next = malloc(sizeof(observer_list));
+    }
+    last->next = NULL;
+    free(current);
+    return result;
+}
+
+/*
+ * Takes in a file containing a list of sightings and returns a linked list
+ * of sightings.
+ */
+
+sighting_list* read_sightings (FILE *sightings, observer_list *list) {
+    sighting_list *result = malloc(sizeof(sighting_list));
+    sighting_list *last = NULL;
+    sighting_list *current = result;
+    char *obs;
+    while(fscanf(sightings, " %s %c %f %f",
+            obs,
+            &current->content->species,
+            &current->content->bearing,
+            &current->content->distance) != EOF) {
+        if ((current->content->obs = find_obs(obs, list)) == NULL) {
+            fprintf(stderr, "Observer %s not found.\n", obs);
+            continue;
+        }
+        last = current;
+        current = current->next = malloc(sizeof(sighting_list));
+    }
+    last->next = NULL;
+    free(current);
+    return result;
+}
+
+/*
+ * Takes in a list of sightings and prints out all sightings in tabulated form.
+ */
+
+void print_sightings(sighting_list *sightings) {
+    sighting_list *curr_sightings = sightings;
+    printf("Observer\tSpecies\tLocation\n");
+    do {
+        sighting *current = curr_sightings->content;
+        location curr_location = get_location(current);
+        printf("%s\t%s\t(%f,%f)\n",
+                current->obs->id,
+                current->species == 'P' ? "Porpoise" : "Dolphin",
+                curr_location.lat, curr_location.lng);
+    } while ((curr_sightings = curr_sightings->next) != NULL);
 }

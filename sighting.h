@@ -59,8 +59,40 @@ double get_distance (sighting *species1, sighting *species2);
 void sighting_walker(sighting_list *list,
         void (*function)(sighting_list *list));
 
-void sighting_walker(sighting_list *in_list, sighting_list *out_list,
-        void (*function)(sighting_list *in_list, sighting_list *out_list));
+/*
+ * Takes the ID code of an observer and a list of observers, and returns the
+ * observer with that ID code.
+ */
+
+observer* find_obs(char *obs, observer_list *list);
+
+/*
+ * Takes in an observer linked list and a function pointer, and runs the
+ * function on every member of the list.
+ */
+
+void obs_walker(observer_list *list,
+        void (*function)(observer_list *list));
+
+/*
+ * Takes in a file containing a list of observers and returns a linked list
+ * of observers.
+ */
+
+observer_list* read_observers(FILE *observers);
+
+/*
+ * Takes in a file containing a list of sightings and returns a linked list
+ * of sightings.
+ */
+
+sighting_list* read_sightings(FILE *sightings, observer_list *list);
+
+/*
+ * Takes in a list of sightings and prints out all sightings in tabulated form.
+ */
+
+void print_sightings(sighting_list *sightings);
 
 #endif	/* SIGHTING_H */
 
