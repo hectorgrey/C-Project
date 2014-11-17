@@ -79,8 +79,11 @@ observer_list* read_observers (FILE *observers) {
     observer_list *result = malloc(sizeof(sighting_list));
     observer_list *last = NULL;
     observer_list *current = result;
-    int lat, lng;
-    while(fscanf(observers,"",current->content->id, &lat, &lng)) {
+    double lat, lng;
+    int day, month, year, hour, minute, second;
+    fscanf(observers, " %d %d %d %d %d %d", &day, &month, &year,
+            &hour, &minute, &second);
+    while(fscanf(observers," %s %lf %lf",current->content->id, &lat, &lng)) {
         current->content->loc.lat = lat;
         current->content->loc.lng = lng;
         last = current;
@@ -101,7 +104,7 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
     sighting_list *last = NULL;
     sighting_list *current = result;
     char *obs;
-    while(fscanf(sightings, " %s %c %f %f",
+    while(fscanf(sightings, " %s %c %lf %lf",
             obs,
             &current->content->species,
             &current->content->bearing,
