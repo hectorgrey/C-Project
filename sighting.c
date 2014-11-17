@@ -27,14 +27,6 @@ location get_location (sighting *species) {
 }
 
 /* 
- * Takes in two sightings, then returns the distance between the two of them.
- */
-
-double get_distance(sighting *species1, sighting *species2) {
-    return great_circle(get_location(species1), get_location(species2));
-}
-
-/* 
  * Takes in a sighting linked list and a function pointer, and runs the
  * function on every member of the list.
  */
@@ -140,9 +132,6 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
         current->content->bearing = bearing;
         current->content->distance = distance;
         loc = get_location(current->content);
-        if (!in_bounds(loc)) {
-            continue;
-        }
         last = current;
         current = current->next = malloc(sizeof(sighting_list));
     }
@@ -161,6 +150,9 @@ void print_sightings(sighting_list *sightings) {
     do {
         sighting *current = curr_sightings->content;
         location curr_location = get_location(current);
+        if (!in_bounds(curr_location)) {
+            continue;
+        }
         printf("%8s\t%8s\t(%f,%f)\n",
                 current->obs->id,
                 current->species == 'P' ? "Porpoise" : "Dolphin",

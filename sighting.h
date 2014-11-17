@@ -46,12 +46,6 @@ typedef struct list_sight {
 location get_location (sighting *species);
 
 /* 
- * Takes in two sightings, then returns the distance between the two of them.
- */
-
-double get_distance (sighting *species1, sighting *species2);
-
-/* 
  * Takes in a sighting linked list and a function pointer, and runs the
  * function on every member of the list.
  */
