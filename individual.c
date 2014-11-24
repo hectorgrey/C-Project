@@ -27,6 +27,7 @@ individual_list* find_individuals(sighting_list *sightings){
     individual_list *result = malloc(sizeof(individual_list));
     individual_list *current_ind = result;
     sighting_list *current_sight = sightings;
+    sighting_list *last = sightings;
     
     do {
         sighting_list *i = current_sight->next;
@@ -38,9 +39,11 @@ individual_list* find_individuals(sighting_list *sightings){
                 collection = (collection->next = malloc(sizeof(sighting_list)));
                 collection->content = sighting2;
             }
+            last = i;
         } while ((i = i->next) != NULL);
         current_ind->content = gen_individual(collection);
         free(collection);
+        last = current_sight;
     } while ((current_sight = current_sight->next) != NULL);
     
     return result;
@@ -51,7 +54,8 @@ individual_list* find_individuals(sighting_list *sightings){
  */
 
 int is_individual (sighting *sighting1, sighting *sighting2) {
-    return get_distance(sighting1, sighting2) < 0.4;
+    return (get_distance(sighting1, sighting2) < 0.4) &&
+            sighting1->species == sighting2->species;
 }
 
 /*
@@ -59,5 +63,21 @@ int is_individual (sighting *sighting1, sighting *sighting2) {
  */
 
 individual* gen_individual(sighting_list *collection) {
-    
+    int counter = 0;
+    char species = collection->content->species;
+    location total;
+    total.lat = 0;
+    total.lng = 0;
+    individual *result = malloc(sizeof(individual));
+    do {
+        location current = get_location(collection->content);
+        total.lat += current.lat;
+        total.lng += current.lng;
+        counter++;
+    } while((collection = collection->next) != NULL);
+    total.lat /= counter;
+    total.lng /= counter;
+    result->position = total;
+    result->species = species;
+    return result;
 }

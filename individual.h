@@ -12,7 +12,8 @@
 #include "sighting.h"
 
 typedef struct {
-    
+    char species;
+    location position;
 } individual;
 
 typedef struct list_ind {
@@ -37,3 +38,14 @@ individual_list* find_individuals(sighting_list *sightings);
 
 #endif	/* INDIVIDUAL_H */
 
+/*
+ * Takes in two sightings and returns if they are the same creature.
+ */
+
+int is_individual (sighting *sighting1, sighting *sighting2);
+
+/*
+ * Takes in a linked list of sightings and returns an individual
+ */
+
+individual* gen_individual(sighting_list *collection);
