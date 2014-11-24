@@ -13,6 +13,7 @@
 
 typedef struct {
     char species;
+    unsigned int sightings;
     location position;
 } individual;
 
@@ -49,3 +50,15 @@ int is_individual (sighting *sighting1, sighting *sighting2);
  */
 
 individual* gen_individual(sighting_list *collection);
+
+/*
+ * Takes in a linked list of individuals and removes any duplicates
+ */
+
+void remove_duplicates(individual_list *list);
+
+/*
+ * Prints out an organised list of individual creatures
+ */
+
+void print_individuals(individual_list *list);

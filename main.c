@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "sighting.h"
+#include "individual.h"
 
 /*
  * Takes no arguments.
@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
     char *o_path = malloc(20);
     sighting_list *sightings;
     observer_list *observers;
+    individual_list *individuals;
     
     // Function 1
     
@@ -45,11 +46,17 @@ int main(int argc, char** argv) {
     fclose(o_file);
     fclose(s_file);
     
+    printf("All sightings within bounds:\n");
+    
     print_sightings(sightings);
     
     // Function 2
     
+    printf("All individuals within bounds:\n");
     
+    individuals = find_individuals(sightings);
+    
+    print_individuals(individuals);
     
     // Function 3
     
