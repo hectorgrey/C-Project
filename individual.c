@@ -55,7 +55,7 @@ individual_list* find_individuals(sighting_list *sightings){
     } while ((current_sight = current_sight->next) != NULL);
     last_ind->next = NULL;
     free(current_ind);
-    remove_duplicates(result);
+    result = remove_duplicates(result, NULL);
     
     return result;
 }
@@ -99,23 +99,31 @@ individual* gen_individual(sighting_list *collection) {
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void remove_duplicates(individual_list *list) {
+individual_list* remove_duplicates(individual_list *list, individual_list *last)
+{
+    //FIX THIS!!!
     individual_list *current;
-    for (current = list; current->next != NULL; current = current->next) {
-        individual_list *last = current;
-        individual_list *check;
-        for (check = current->next; check != NULL; check = check->next) {
-            individual *record_a = current->content;
-            individual *record_b = check->content;
-            if (record_a->species == record_b->species &&
-                    record_a->position.lat == record_b->position.lat &&
-                    record_a->position.lng == record_b->position.lng) {
-                last->next = check->next;
-                free(check);
-            }
-            last = check;
+    if (list->next != NULL)
+        current = remove_duplicates(list->next, list);
+    else
+        printf("End of recursion.\n");
+        current = list;
+    if (last != NULL) {
+        individual record_a = current->content;
+        individual record_b = last->content;
+        
+        printf("Recurring.\n");
+        
+        if (record_a->species == record_b->species &&
+                great_circle(record_a->position, record_b->position) <= 0.02) {
+            printf("Found a duplicate.\n");
+            printf("Duplicate to previous: %d\n", current);
+            free(current);
+            last->next = current = list->next;
+            printf("New current: %d\n", current);
         }
     }
+    return current;
 }
 
 /*

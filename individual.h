@@ -55,7 +55,7 @@ individual* gen_individual(sighting_list *collection);
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void remove_duplicates(individual_list *list);
+individual_list* remove_duplicates(individual_list *list);
 
 /*
  * Prints out an organised list of individual creatures
