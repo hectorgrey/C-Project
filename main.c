@@ -17,13 +17,13 @@
 int main(int argc, char** argv) {
     FILE *s_file;
     FILE *o_file;
-    char *s_path = malloc(20);
-    char *o_path = malloc(20);
+    char *s_path = malloc(21);
+    char *o_path = malloc(21);
     sighting_list *sightings;
     observer_list *observers;
     individual_list *individuals;
     
-    // Function 1
+    // File reading and data parsing
     
     printf("Please enter the file name you wish to load the observers from: ");
     scanf("%s", o_path);
@@ -45,6 +45,8 @@ int main(int argc, char** argv) {
     sightings = read_sightings(s_file, observers);
     fclose(o_file);
     fclose(s_file);
+    
+    // Function 1
     
     printf("All sightings within bounds:\n");
     
