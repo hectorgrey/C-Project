@@ -55,7 +55,7 @@ individual_list* find_individuals(sighting_list *sightings){
     } while ((current_sight = current_sight->next) != NULL);
     last_ind->next = NULL;
     free(current_ind);
-    result = remove_duplicates(result, NULL);
+    remove_duplicates(result, NULL);
     
     return result;
 }
@@ -99,31 +99,20 @@ individual* gen_individual(sighting_list *collection) {
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-individual_list* remove_duplicates(individual_list *list, individual_list *last)
-{
-    //FIX THIS!!!
-    individual_list *current;
+void remove_duplicates(individual_list *list, individual_list *last) {
+    individual_list *current = list;
     if (list->next != NULL)
-        current = remove_duplicates(list->next, list);
-    else
-        printf("End of recursion.\n");
-        current = list;
+        remove_duplicates(list->next, list);
     if (last != NULL) {
-        individual record_a = current->content;
-        individual record_b = last->content;
-        
-        printf("Recurring.\n");
+        individual *record_a = current->content;
+        individual *record_b = last->content;
         
         if (record_a->species == record_b->species &&
                 great_circle(record_a->position, record_b->position) <= 0.02) {
-            printf("Found a duplicate.\n");
-            printf("Duplicate to previous: %d\n", current);
             free(current);
             last->next = current = list->next;
-            printf("New current: %d\n", current);
         }
     }
-    return current;
 }
 
 /*
