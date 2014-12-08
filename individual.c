@@ -50,7 +50,6 @@ individual_list* find_individuals(sighting_list *sightings){
         current_ind->content = gen_individual(collection);
         last_ind = current_ind;
         current_ind = (current_ind->next = malloc(sizeof(individual_list)));
-        free(collection);
         last_sight = current_sight;
     } while ((current_sight = current_sight->next) != NULL);
     last_ind->next = NULL;
@@ -122,15 +121,21 @@ void remove_duplicates(individual_list *list, individual_list *last) {
 
 void print_individuals(individual_list *list){
     individual_list *current = list;
+    printf("Location\t\tSightings\tSpecies\n");
     do {
         individual *record = current->content;
         if (in_bounds(record->position)) {
-	    print_sightings(record->sightings);
-	    printf("Location\t\tSightings\tSpecies\n");
+            sighting_list *sightings;
             printf("(%f, %f)\t%8d\t%s\n",
                     record->position.lat, record->position.lng,
                     record->sighting_num,
                     record->species == 'P' ? "Porpoise" : "Dolphin");
+            for (sightings = record->sightings; sightings != NULL;
+                    sightings = sightings->next) {
+                location loc = get_location(sightings->content);
+                printf("(%f, %f) seen by %s\n", loc.lat, loc.lng,
+                        sightings->content->obs->id);
+            }
         }
     } while ((current = current->next) != NULL);
     printf("\n");
