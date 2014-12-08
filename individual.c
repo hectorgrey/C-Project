@@ -89,7 +89,8 @@ individual* gen_individual(sighting_list *collection) {
     } while((curr_entry = curr_entry->next) != NULL);
     total.lat /= counter;
     total.lng /= counter;
-    result->sightings = counter;
+    result->sightings = collection;
+    result->sighting_num = counter;
     result->position = total;
     result->species = species;
     return result;
@@ -121,13 +122,14 @@ void remove_duplicates(individual_list *list, individual_list *last) {
 
 void print_individuals(individual_list *list){
     individual_list *current = list;
-    printf("Location\t\tSightings\tSpecies\n\n");
     do {
         individual *record = current->content;
         if (in_bounds(record->position)) {
+	    print_sightings(record->sightings);
+	    printf("Location\t\tSightings\tSpecies\n");
             printf("(%f, %f)\t%8d\t%s\n",
                     record->position.lat, record->position.lng,
-                    record->sightings,
+                    record->sighting_num,
                     record->species == 'P' ? "Porpoise" : "Dolphin");
         }
     } while ((current = current->next) != NULL);

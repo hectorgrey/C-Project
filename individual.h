@@ -13,7 +13,8 @@
 
 typedef struct {
     char species;
-    unsigned int sightings;
+    unsigned int sighting_num;
+    sighting_list *sightings;
     location position;
 } individual;
 

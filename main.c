@@ -40,13 +40,13 @@ int main(int argc, char** argv) {
         fclose(o_file);
         return (EXIT_FAILURE);
     }
+
+    // Function 1
     
     observers = read_observers(o_file);
     sightings = read_sightings(s_file, observers);
     fclose(o_file);
     fclose(s_file);
-    
-    // Function 1
     
     printf("All sightings within bounds:\n");
     
