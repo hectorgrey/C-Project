@@ -9,7 +9,6 @@
 #define	INDIVIDUAL_H
 
 #include "navigation.h"
-#include "sighting.h"
 
 typedef struct {
     char species;

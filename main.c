@@ -8,7 +8,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "navigation.h"
+#include "sighting.h"
 #include "individual.h"
+#include "pod.h"
 
 individual_list* function_two(sighting_list*);
 pod_list* function_three(individual_list*);

@@ -10,7 +10,6 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "navigation.h"
 
 #define to_radians(deg) ((deg) * M_PI) / 180
 #define MAX_LNG -4.0

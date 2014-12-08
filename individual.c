@@ -7,6 +7,9 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
+#include "navigation.h"
+#include "sighting.h"
 #include "individual.h"
 
 /* 
