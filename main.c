@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
     observer_list *observers;
     individual_list *individuals;
     
-    // File reading and data parsing
+    /* File reading and data parsing */
     
     printf("Please enter the file name you wish to load the observers from: ");
     scanf("%s", o_path);
