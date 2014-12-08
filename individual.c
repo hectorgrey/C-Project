@@ -110,7 +110,7 @@ void remove_duplicates(individual_list *list, individual_list *last) {
         if (record_a->species == record_b->species &&
                 great_circle(record_a->position, record_b->position) <= 0.02) {
             free(current);
-            last->next = current = list->next;
+            last->next = list->next;
         }
     }
 }
