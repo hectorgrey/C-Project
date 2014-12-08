@@ -18,5 +18,23 @@ typedef struct list_pods {
     struct list_pods *next;
 } pod_list;
 
+/* 
+ * Takes a list of individuals, and returns a list of pods.
+ */
+
+pod_list* find_pods(individual_list *individuals);
+
+/*
+ * Takes a list of individuals and returns a pointer to a pod.
+ */
+
+pod* gen_pod(individual_list *collection);
+
+/*
+ * Prints a list of pods and prints it out
+ */
+
+void print_pods(pod_list *pods);
+
 #endif	/* POD_H */
 

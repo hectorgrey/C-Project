@@ -12,3 +12,31 @@
 #include "sighting.h"
 #include "individual.h"
 #include "pod.h"
+
+/* 
+ * Takes a list of individuals, and returns a list of pods.
+ */
+
+pod_list* find_pods(individual_list *individuals) {
+    pod_list* result;
+    
+    return result;
+}
+
+/*
+ * Takes a list of individuals and returns a pointer to a pod.
+ */
+
+pod* gen_pod(individual_list *collection) {
+    pod *result;
+    
+    return result;
+}
+
+/*
+ * Prints a list of pods and prints it out
+ */
+
+void print_pods(pod_list *pods) {
+    
+}

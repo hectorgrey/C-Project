@@ -69,7 +69,6 @@ void function_two(sighting_list* sightings) {
     char option;
     
     printf("All individuals within bounds:\n");
-    
     individuals = find_individuals(sightings);
     
     print_individuals(individuals);
@@ -84,4 +83,9 @@ void function_two(sighting_list* sightings) {
 
 void function_three(individual_list* individuals) {
     pod_list *pods;
+    
+    printf("All pods within bounds:\n");
+    pods = find_pods(individuals);
+    
+    print_pods(pods);
 }
