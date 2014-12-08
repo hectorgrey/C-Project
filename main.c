@@ -13,8 +13,8 @@
 #include "individual.h"
 #include "pod.h"
 
-individual_list* function_two(sighting_list*);
-pod_list* function_three(individual_list*);
+void function_two(sighting_list*);
+void function_three(individual_list*);
 
 int main(int argc, char** argv) {
     FILE *s_file;
@@ -24,8 +24,6 @@ int main(int argc, char** argv) {
     char option;
     sighting_list *sightings;
     observer_list *observers;
-    individual_list *individuals;
-    pod_list *pods;
     
     /* File reading and data parsing */
     
@@ -61,20 +59,14 @@ int main(int argc, char** argv) {
     printf("View individual mammals? (Y/N)\t");
     scanf(" %c", &option);
     if (option == 'Y' || option == 'y')
-        individuals = function_two(sightings);
-    
-    // Function 3
-    
-    printf("View pods? (Y/N)\t");
-    scanf(" %c", &option);
-    if (option == 'Y' || option == 'y')
-        pods = function_three(individuals);
+        function_two(sightings);
     
     return (EXIT_SUCCESS);
 }
 
-individual_list* function_two(sighting_list* sightings) {
+void function_two(sighting_list* sightings) {
     individual_list *individuals;
+    char option;
     
     printf("All individuals within bounds:\n");
     
@@ -82,11 +74,14 @@ individual_list* function_two(sighting_list* sightings) {
     
     print_individuals(individuals);
     
-    return individuals;
+    // Function 3
+    
+    printf("View pods? (Y/N)\t");
+    scanf(" %c", &option);
+    if (option == 'Y' || option == 'y')
+        function_three(individuals);
 }
 
-pod_list* function_three(individual_list* individuals) {
+void function_three(individual_list* individuals) {
     pod_list *pods;
-    
-    return pods;
 }
