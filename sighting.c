@@ -26,12 +26,8 @@ observer_list* read_observers (FILE *observers) {
     char *id = malloc(5);
     fscanf(observers, " %d %d %d %d %d %d", &day, &month, &year,
             &hour, &minute, &second);
-    printf("Observations recorded at %c%d/%c%d/%4d at %c%d:%c%d:%c%d.\n",
-            day < 10 ? '0' : '\0', day, 
-            month < 10 ? '0' : '\0', month, year,
-            hour < 10 ? '0' : '\0', hour,
-            minute < 10 ? '0' : '\0', minute,
-            second < 10 ? '0' : '\0', second);
+    printf("Observations recorded at %02d/%02d/%4d at %02d:%02d:%02d.\n",
+            day, month, year, hour, minute, second);
     while(fscanf(observers, " %s %lf %lf", id, &lat, &lng)
             != EOF) {
         current->content = malloc(sizeof(observer));
