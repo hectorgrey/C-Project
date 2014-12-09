@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "navigation.h"
 #include "sighting.h"
 #include "individual.h"
