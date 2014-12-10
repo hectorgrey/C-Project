@@ -25,10 +25,10 @@ int is_individual (sighting *sighting1, sighting *sighting2) {
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void remove_duplicates(individual_list *list, individual_list *last) {
+void tidy_individuals(individual_list *list, individual_list *last) {
     individual_list *current = list;
     if (list->next != NULL)
-        remove_duplicates(list->next, list);
+        tidy_individuals(list->next, list);
     if (last != NULL) {
         individual *record_a = current->content;
         individual *record_b = last->content;
