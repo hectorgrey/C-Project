@@ -21,6 +21,8 @@ pod_list* find_pods(individual_list *individuals) {
     pod_list *result = malloc(sizeof(pod_list));
     pod_list *current = result;
     pod_list *tail;
+    int count = 1;
+    
     do {
         individual_list *coll_root = malloc(sizeof(individual_list));
         individual_list *coll_curr = coll_root;
@@ -40,10 +42,11 @@ pod_list* find_pods(individual_list *individuals) {
         current->content = gen_pod(coll_root);
         tail = current;
         current = current->next = malloc(sizeof(pod_list));
+        count++;
     } while((individuals = individuals->next) != NULL);
     
-    tidy_pods(result, NULL);
-    
+    //tidy_pods(result, NULL);
+    printf("%d\n", count);
     free(current);
     tail->next = NULL;
     
@@ -78,7 +81,7 @@ void print_pods(pod_list *pods) {
         individual_list *mammals = pods->content->individuals;
         printf("Pod %d:\n",counter++);
         print_individuals(mammals);
-    }while(pods->next != NULL);
+    }while((pods = pods->next) != NULL);
 }
 
 /*
