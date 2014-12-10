@@ -49,7 +49,7 @@ individual_list* find_individuals(sighting_list *sightings){
     } while ((current_sight = current_sight->next) != NULL);
     last_ind->next = NULL;
     free(current_ind);
-    remove_duplicates(result, NULL);
+    tidy_individuals(result, NULL);
     
     return result;
 }
