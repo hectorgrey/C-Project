@@ -74,7 +74,6 @@ pod* gen_pod(individual_list *collection) {
  */
 
 void print_pods(pod_list *pods) {
-    //TODO: Do this later!!!
     int counter = 1;
     do {
         individual_list *mammals = pods->content->individuals;
