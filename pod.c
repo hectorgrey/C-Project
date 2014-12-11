@@ -20,7 +20,7 @@
 pod_list* find_pods(individual_list *individuals) {
     pod_list *result = malloc(sizeof(pod_list));
     pod_list *current = result;
-    pod_list *tail;
+    pod_list *tail = current;
     
     do {
         if (in_bounds(individuals->content->position)) {
@@ -44,10 +44,10 @@ pod_list* find_pods(individual_list *individuals) {
         }
     } while((individuals = individuals->next) != NULL);
     
-    free(current);
     tail->next = NULL;
+    free(current);
     
-    tidy_pods(result, NULL);
+    //tidy_pods(result, NULL);
     
     return result;
 }
@@ -88,17 +88,18 @@ void print_pods(pod_list *pods) {
  */
 
 void tidy_pods(pod_list *list, pod_list *last) {
+    pod_list *current = list;
     static int count;
     if (list->next != NULL)
         printf("%p - %d\n", list->next, count++);
         tidy_pods(list->next, list);
     if (last != NULL) {
         printf("Made it past recursive bit\n");
-        pod *record_a = list->content;
+        pod *record_a = current->content;
         pod *record_b = last->content;
         if (record_a->individuals->next == record_b->individuals) {
+            free(current);
             last->next = list->next;
-            free(list);
         }
     }
 }
