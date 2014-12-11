@@ -57,7 +57,6 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
     double bearing, distance;
     while(fscanf(sightings, " %s %c %lf %lf",
             obs, &species, &bearing, &distance) != EOF) {
-        location loc;
         current->content = malloc(sizeof(sighting));
         if ((current->content->obs = find_obs(obs, list)) == NULL) {
             fprintf(stderr, "Observer %s not found.\n", obs);
@@ -66,7 +65,6 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
         current->content->species = species;
         current->content->bearing = bearing;
         current->content->distance = distance;
-        loc = get_location(current->content);
         last = current;
         current = current->next = malloc(sizeof(sighting_list));
     }

@@ -45,14 +45,6 @@ typedef struct list_sight {
 
 location get_location (sighting *species);
 
-/* 
- * Takes in a sighting linked list and a function pointer, and runs the
- * function on every member of the list.
- */
-
-void sighting_walker(sighting_list *list,
-        void (*function)(sighting_list *list));
-
 /*
  * Takes the ID code of an observer and a list of observers, and returns the
  * observer with that ID code.
