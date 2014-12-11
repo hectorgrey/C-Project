@@ -87,7 +87,7 @@ void print_pods(pod_list *pods) {
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void tidy_individuals(pod_list *list) {
+void tidy_pods(pod_list *list) {
     pod_list *current;
     for (current = list; current != NULL; current = current->next) {
         pod_list *test;

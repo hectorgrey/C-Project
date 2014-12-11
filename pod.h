@@ -54,5 +54,5 @@ int is_close(individual *to_test, individual_list *list);
  * Returns 1 if main contains other, or 0 if not.
  */
 
-int pod_contains(pod_list *main, pod_list *other)
+int pod_contains(pod_list *main, pod_list *other);
 
