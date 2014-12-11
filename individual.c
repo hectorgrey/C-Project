@@ -87,21 +87,25 @@ individual* gen_individual(sighting_list *collection) {
 
 void print_individuals(individual_list *list){
     individual_list *current = list;
-    printf("Location\t\tSightings\tSpecies\n");
+    printf("+=======================+===============+==========+\n");
+    printf("| Location\t\t| Sightings\t|  Species |\n");
+    printf("+-----------------------+---------------+----------+\n");
     do {
         individual *record = current->content;
         if (in_bounds(record->position)) {
             sighting_list *sightings;
-            printf("(%f, %f)\t%8d\t%s\n",
+            printf("|(%f, %f)\t|%8d\t| %8s |\n",
                     record->position.lat, record->position.lng,
                     record->sighting_num,
                     record->species == 'P' ? "Porpoise" : "Dolphin");
+            printf("+-----------------------+---------------+----------+\n");
             for (sightings = record->sightings; sightings != NULL;
                     sightings = sightings->next) {
                 location loc = get_location(sightings->content);
-                printf("(%f, %f) seen by %s\n", loc.lat, loc.lng,
+                printf("| (%f, %f) seen by %s\t\t   |\n", loc.lat, loc.lng,
                         sightings->content->obs->id);
             }
+            printf("+=======================+===============+==========+\n");
         }
     } while ((current = current->next) != NULL);
     printf("\n");

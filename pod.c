@@ -62,7 +62,7 @@ pod* gen_pod(individual_list *collection) {
     
     result->individuals = collection;
     
-    for(count = 1; collection != NULL; collection = collection->next, count++);
+    for(count = 0; collection != NULL; collection = collection->next, count++);
     
     result->total_mammals = count;
     
@@ -75,9 +75,25 @@ pod* gen_pod(individual_list *collection) {
 
 void print_pods(pod_list *pods) {
     int counter = 1;
+    printf("+==================================================+\n");
     do {
-        individual_list *mammals = pods->content->individuals;
-        printf("Pod %d:\n",counter++);
-        print_individuals(mammals);
+        individual_list *mammals;
+        printf("| Pod %d:\t\t\t\t\t   |\n",counter++);
+        printf("+-----------------------+---------------+----------+\n");
+        printf("| Location\t\t| Sightings\t|  Species |\n");
+        printf("+-----------------------+---------------+----------+\n");
+        for(mammals = pods->content->individuals;
+                mammals != NULL;
+                mammals = mammals->next) {
+            individual *record = mammals->content;
+            printf("|(%f, %f)\t|%8d\t| %8s |\n",
+                    record->position.lat, record->position.lng,
+                    record->sighting_num,
+                    record->species == 'P' ? "Porpoise" : "Dolphin");
+            printf("+-----------------------+---------------+----------+\n");
+        }
+        printf("| %d animals in pod.\t\t\t\t   |\n",
+                pods->content->total_mammals);
+        printf("+==================================================+\n");
     }while((pods = pods->next) != NULL);
 }

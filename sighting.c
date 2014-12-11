@@ -81,17 +81,20 @@ sighting_list* read_sightings (FILE *sightings, observer_list *list) {
 
 void print_sightings(sighting_list *sightings) {
     sighting_list *curr_sightings = sightings;
-    printf("Observer\tSpecies\t\tLocation\n\n");
+    printf("+===============+===============+=======================+\n");
+    printf("| Observer\t| Species\t| Location\t\t|\n");
+    printf("+---------------+---------------+-----------------------+\n");
     do {
         sighting *current = curr_sightings->content;
         location curr_location = get_location(current);
         if (!in_bounds(curr_location)) {
             continue;
         }
-        printf("%8s\t%8s\t(%f,%f)\n",
+        printf("|%8s\t| %8s\t| (%f,%f)\t|\n",
                 current->obs->id,
                 current->species == 'P' ? "Porpoise" : "Dolphin",
                 curr_location.lat, curr_location.lng);
     } while ((curr_sightings = curr_sightings->next) != NULL);
+    printf("+===============+===============+=======================+\n");
     printf("\n");
 }
