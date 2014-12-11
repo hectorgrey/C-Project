@@ -112,7 +112,8 @@ int pod_contains(pod_list *main, pod_list *other) {
     individual_list *current = main->content->individuals;
     individual_list *test = other->content->individuals;
     while ((current = current->next) != NULL) {
-        if (current->content == test->content) {
+        if (current->content->position.lat == test->content->position.lat &&
+                current->content->position.lng == test->content->position.lng) {
             return 1;
         }
     }
