@@ -47,7 +47,7 @@ pod_list* find_pods(individual_list *individuals) {
     tail->next = NULL;
     free(current);
     
-    //tidy_pods(result, NULL);
+    tidy_pods(result);
     
     return result;
 }
@@ -84,24 +84,39 @@ void print_pods(pod_list *pods) {
 }
 
 /*
- * Recursively removes duplicate pods.
+ * Takes in a linked list of individuals and removes any duplicates
  */
 
-void tidy_pods(pod_list *list, pod_list *last) {
-    pod_list *current = list;
-    static int count;
-    if (list->next != NULL)
-        printf("%p - %d\n", list->next, count++);
-        tidy_pods(list->next, list);
-    if (last != NULL) {
-        printf("Made it past recursive bit\n");
-        pod *record_a = current->content;
-        pod *record_b = last->content;
-        if (record_a->individuals->next == record_b->individuals) {
-            free(current);
-            last->next = list->next;
+void tidy_individuals(pod_list *list) {
+    pod_list *current;
+    for (current = list; current != NULL; current = current->next) {
+        pod_list *test;
+        pod_list *last = current;
+        for (test = current->next; test != NULL; test = test->next) {
+            if (pod_contains(current, test)) {
+                last->next = test->next;
+                free(test);
+            }
+            else {
+                last = test;
+            }
         }
     }
+}
+
+/*
+ * Returns 1 if main contains other, or 0 if not.
+ */
+
+int pod_contains(pod_list *main, pod_list *other) {
+    individual_list *current = main->content->individuals;
+    individual_list *test = other->content->individuals;
+    while ((current = current->next) != NULL) {
+        if (current->content == test->content) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 /*

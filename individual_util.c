@@ -25,18 +25,34 @@ int is_individual (sighting *sighting1, sighting *sighting2) {
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void tidy_individuals(individual_list *list, individual_list *last) {
-    individual_list *current = list;
-    if (list->next != NULL)
-        tidy_individuals(list->next, list);
-    if (last != NULL) {
-        individual *record_a = current->content;
-        individual *record_b = last->content;
-        
-        if (record_a->species == record_b->species &&
-                great_circle(record_a->position, record_b->position) <= 0.02) {
-            free(current);
-            last->next = list->next;
+void tidy_individuals(individual_list *list) {
+    individual_list *current;
+    for (current = list; current != NULL; current = current->next) {
+        individual_list *test;
+        individual_list *last = current;
+        for (test = current->next; test != NULL; test = test->next) {
+            if (ind_contains(current, test)) {
+                last->next = test->next;
+                free(test);
+            }
+            else {
+                last = test;
+            }
         }
     }
+}
+
+/*
+ * Returns 1 if main contains other, or 0 if not.
+ */
+
+int ind_contains(individual_list *main, individual_list *other) {
+    sighting_list *current = main->content->sightings;
+    sighting_list *test = other->content->sightings;
+    while ((current = current->next) != NULL) {
+        if (current->content == test->content) {
+            return 1;
+        }
+    }
+    return 0;
 }

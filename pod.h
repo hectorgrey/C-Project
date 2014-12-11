@@ -39,14 +39,20 @@ void print_pods(pod_list *pods);
 #endif	/* POD_H */
 
 /* 
- * Recursively removes duplicate pods.
+ * Removes duplicate pods.
  */
 
-void tidy_pods(pod_list *list, pod_list *last);
+void tidy_pods(pod_list *list);
 
 /*
  * Recursively find if mammal is close enough to any others to be in pod
  */
 
 int is_close(individual *to_test, individual_list *list);
+
+/*
+ * Returns 1 if main contains other, or 0 if not.
+ */
+
+int pod_contains(pod_list *main, pod_list *other)
 

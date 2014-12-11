@@ -55,10 +55,16 @@ individual* gen_individual(sighting_list *collection);
  * Takes in a linked list of individuals and removes any duplicates
  */
 
-void remove_duplicates(individual_list *list, individual_list *last);
+void remove_duplicates(individual_list *list);
 
 /*
  * Prints out an organised list of individual creatures
  */
 
 void print_individuals(individual_list *list);
+
+/*
+ * Returns 1 if main contains test, or 0 if not.
+ */
+
+int ind_contains(individual_list *main, individual_list *test);
