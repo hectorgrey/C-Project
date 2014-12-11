@@ -1,4 +1,4 @@
-
+#include <string.h>
 
 #include "navigation.h"
 #include "sighting.h"
