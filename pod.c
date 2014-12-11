@@ -21,34 +21,33 @@ pod_list* find_pods(individual_list *individuals) {
     pod_list *result = malloc(sizeof(pod_list));
     pod_list *current = result;
     pod_list *tail;
-    int count = 1;
     
     do {
-        individual_list *coll_root = malloc(sizeof(individual_list));
-        individual_list *coll_curr = coll_root;
-        individual_list *remainder = individuals->next;
-        coll_curr->content = individuals->content;
-        coll_curr->next = NULL;
-        while (remainder != NULL) {
-            if (in_bounds(remainder->content->position) &&
-                    is_close(remainder->content, coll_root)) {
-                coll_curr = coll_curr->next = malloc(sizeof(individual_list));
-                coll_curr->content = remainder->content;
-                coll_curr->next = NULL;
+        if (in_bounds(individuals->content->position)) {
+            individual_list *coll_root = malloc(sizeof(individual_list));
+            individual_list *coll_curr = coll_root;
+            individual_list *remainder = individuals->next;
+            coll_curr->content = individuals->content;
+            coll_curr->next = NULL;
+            while (remainder != NULL) {
+                if (in_bounds(remainder->content->position) &&
+                        is_close(remainder->content, coll_root)) {
+                    coll_curr = coll_curr->next = malloc(sizeof(individual_list));
+                    coll_curr->content = remainder->content;
+                    coll_curr->next = NULL;
+                }
+                remainder = remainder->next;
             }
-            remainder = remainder->next;
+            current->content = gen_pod(coll_root);
+            tail = current;
+            current = current->next = malloc(sizeof(pod_list));
         }
-        printf("Created Collection\n");
-        current->content = gen_pod(coll_root);
-        tail = current;
-        current = current->next = malloc(sizeof(pod_list));
-        count++;
     } while((individuals = individuals->next) != NULL);
     
-    //tidy_pods(result, NULL);
-    printf("%d\n", count);
     free(current);
     tail->next = NULL;
+    
+    tidy_pods(result, NULL);
     
     return result;
 }
@@ -89,12 +88,14 @@ void print_pods(pod_list *pods) {
  */
 
 void tidy_pods(pod_list *list, pod_list *last) {
+    static int count;
     if (list->next != NULL)
-        tidy_individuals(list->next, list);
+        printf("%p - %d\n", list->next, count++);
+        tidy_pods(list->next, list);
     if (last != NULL) {
+        printf("Made it past recursive bit\n");
         pod *record_a = list->content;
         pod *record_b = last->content;
-        
         if (record_a->individuals->next == record_b->individuals) {
             last->next = list->next;
             free(list);
