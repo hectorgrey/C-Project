@@ -61,14 +61,6 @@ void sighting_walker(sighting_list *list,
 observer* find_obs(char *obs, observer_list *list);
 
 /*
- * Takes in an observer linked list and a function pointer, and runs the
- * function on every member of the list.
- */
-
-void obs_walker(observer_list *list,
-        void (*function)(observer_list *list));
-
-/*
  * Takes in a file containing a list of observers and returns a linked list
  * of observers.
  */
